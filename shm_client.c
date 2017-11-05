@@ -22,7 +22,7 @@ void exit_handler(int sig) {
   pthread_mutex_lock(mutex);
   pstat->pid = -1;
   pthread_mutex_unlock(mutex);
-	// critical section ends
+  // critical section ends
   exit(1);
 }
 
@@ -55,9 +55,9 @@ int main(int argc, char *argv[]) {
   stats_t* pstatch;
   int flag = 0;
   int curr_pid = getpid();
+  pthread_mutex_lock(mutex);
   for(int i = 1; i <= maxClients; i++){
     pstat = (stats_t*)(shm_ptr + i * 64);
-    pthread_mutex_lock(mutex);
     if(pstat->pid == -1){
       pstat->pid = curr_pid;
       pthread_mutex_unlock(mutex);
@@ -89,7 +89,6 @@ int main(int argc, char *argv[]) {
       }
     }
     printf("\n");
-    
   }
   return 0;
 }
